@@ -1,0 +1,135 @@
+EXPERIMENT NO. 05
+
+Title:	Handling Form in PHP
+
+Problem Statement:
+Create a registration form with all component (Textbox, radio button, checkbox, list..) . Perform the validation of all fields. After Submit Display information of registration in PHP on other page
+(Make use of POST method, Use Superglobal variable $_POST() 
+Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technology Known (Checkbox) etc…
+(Include all kind of components in form)
+ 
+1.html 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex; justify-content: center; align-items: center;">
+
+    <div class="container">
+        <h2>Registration form </h2>
+        <form action="action.php" method="POST">
+            First Name : <input type="text" name="fname" required><br><br>
+            Last Name : <input type="text" name="lname" required><br><br>
+            Roll Number : <input type="text" name="roll" required><br><br>
+            Email : <input type="text" name="email" required><br><br>
+            Password : <input type="password" name="password" required><br><br>
+            Enter Mobile Number : <input type="text" name="monumber" required><br> <br>  
+
+            Gender : <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female<br><br>
+            
+            <label for="class">Class:</label>
+            <select id="class" name="class" required>
+                <option value="SY">SY</option>
+                <option value="TY">TY</option>
+                <option value="BTech">BTech</option>
+            </select><br><br>
+
+            <label>Technology Known:</label>
+                <input type="checkbox" id="html" name="technology[]" value="HTML">HTML
+            
+                <input type="checkbox" id="css" name="technology[]" value="CSS">CSS
+                
+                <input type="checkbox" id="php" name="technology[]" value="PHP">PHP
+
+                <br><br>
+
+            <input type="submit" name="submit" value="Submit" >
+
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+action.php
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registration Details</title>
+</head>
+
+<body style="display: flex; justify-content: center; align-items: center;">
+
+    <div class="container">
+        <h2>Registration Details</h2>
+        <?php
+        if (isset($_POST['submit'])) {
+            $fname = $_POST['fname'];
+            $lname = $_POST['lname'];
+
+            $roll = $_POST['roll'];
+            $email = $_POST['email'];
+
+            $password = $_POST['password'];
+
+            $monumber = $_POST['monumber'];
+            $class = $_POST['class'];
+            $gender = $_POST['gender'];
+            $technology = $_POST['technology'];
+
+            if (!preg_match('/^[a-zA-Z]+$/', $fname)) {
+                echo "<p>First Name: Invalid First name</p>";
+            } else {
+                echo "<p>First Name: $fname</p>";
+            }
+
+            if (!preg_match('/^[a-zA-Z]+$/', $lname)) {
+                echo "<p>Lirst Name: Invalid Last name</p>";
+            } else {
+                echo "<p>Lirst Name: $lname</p>";
+            }
+
+            if (!preg_match('/^[0-9]{7}+$/', $roll)) {
+                echo "<p>Roll Number: Invalid Roll Number</p>";
+            } else {
+                echo "<p>Roll Number: $roll</p>";
+            }
+
+            if (!preg_match('/^[1-9][0-9]{9}+$/', $monumber)) {
+                echo "<p>Mobile Number: Invalid Mobile Number</p>";
+            } else {
+                echo "<p>Mobile Number: $monumber</p>";
+            }
+
+            if (!preg_match('/^[a-zA-Z0-9_]{8,}+$/', $password)) {
+                echo "<p>Password : Invalid Mobile Number</p>";
+            } else {
+                echo "<p>Password: $password</p>";
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo "<p>Email ID: Invalid email address</p>";
+            } else {
+
+                echo "<p>Email ID: $email</p>";
+            }
+
+            echo "<p>Class: $class</p>";
+            echo "<p>Gender: $gender</p>";
+            echo "<p>Technology Known: " . implode(", ", $technology) . "</p>";
+        }
+        ?>
+    </div>
+</body>
+
+</html>
+
