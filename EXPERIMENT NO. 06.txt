@@ -1,0 +1,120 @@
+EXPERIMENT NO. 06
+
+Title:	Cookies and Session
+Aim: To understand the cookies and session concept in PHP. 
+Objective: To implement the program on cookies and session
+Contents:
+MCQ and Technical Questions on cookies and session
+
+Program to implement in Lab:
+1.	Implement the PHP code to
+-	Set the cookies
+-	Retrieve the information of cookies 
+-	Update the cookies
+-	Delete the cookies 
+<?php
+    # Set the cookies
+    $cookie_name = "user";
+    $cookie_value = "DS";
+    setcookie($cookie_name, $cookie_value, time() + 3600);
+?>
+
+<?php
+    # Retrieve the information of cookies 
+    if(!isset($_COOKIE[$cookie_name])) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+    } else {
+    echo "Cookie '" . $cookie_name . "' is set!<br>";
+    echo "Value is: " . $_COOKIE[$cookie_name];
+    }
+?>
+
+<?php
+    # Update the cookies
+    $cookie_Uptaded_value = "DS123";
+    setcookie($cookie_name, $cookie_Uptaded_value, time() + 3600);
+    echo "<br>";
+    echo "Updated Value is: " . $_COOKIE[$cookie_name];
+?>
+
+<?php
+    // Delete the cookies 
+    setcookie("user", "", time() - 3600);
+    echo "<br>";
+    echo "Cookie 'user' has been deleted.";
+
+?>
+
+2.	Implement the PHP code to Manage the session
+-	Starting session
+-	Creating session
+-	Accessing session values
+-	Destroying session
+
+<?php
+    // Starting session
+    session_start();
+    echo "Session has been started.<br>";
+
+    // Creating session
+    $_SESSION["username"] = "DS";
+
+    // Accessing session values
+    if(isset($_SESSION["username"])) {
+        echo "Session variable 'username' is set with the value: " . $_SESSION["username"] . "<br>";
+    } else {
+        echo "Session variable 'username' is not set.<br>";
+    }
+
+    // Destroy the session
+    session_unset();
+    session_destroy();
+    echo "Session has been destroyed.";
+?>
+
+
+3.	Implement the PHP code to find how many times the page is visited 
+
+
+<?php
+    session_start();
+
+    if(isset($_SESSION['views'])) {
+        $_SESSION['views'] = $_SESSION['views'] + 1;
+    } else {
+        $_SESSION['views'] = 1;
+    }
+
+    echo "This page is visited " . $_SESSION['views'] . " times.";
+?>
+
+
+
+4.	Implement the PHP code to demonstrate the expiry of session by clicking logout or back button)
+4.php
+<?php
+    // logout.php
+    session_start();
+    session_unset();
+    session_destroy();
+    echo "Session has been destroyed. Redirecting to login page...";
+    header("refresh:2;url=login.php"); 
+    exit();
+?>
+
+Login.php
+<?php
+    echo "Login Page";
+?>
+
+5.	Implement the PHO code to demonstrate the use of $_SERVER to find the details of name of server, name of the script, IP address of server, name of the request method, name of the protocol
+
+<?php
+    echo "Server Name: " . $_SERVER['SERVER_NAME'] . "<br>";
+    echo "Script Name: " . $_SERVER['SCRIPT_NAME'] . "<br>";
+    echo "Server IP Address: " . $_SERVER['SERVER_ADDR'] . "<br>";
+    echo "Request Method: " . $_SERVER['REQUEST_METHOD'] . "<br>";
+    echo "Protocol: " . $_SERVER['SERVER_PROTOCOL'] . "<br>";
+?>
+
+
