@@ -188,7 +188,7 @@ Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technol
 1.html 
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -226,13 +226,14 @@ Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technol
 
                 <br><br>
 
+
             <input type="submit" name="submit" value="Submit" >
+
 
         </form>
     </div>
 </body>
-</html>
-
+</html> -->
 
 
 action.php
