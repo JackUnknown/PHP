@@ -1,0 +1,285 @@
+EXPERIMENT NO. 07
+
+Title:	Database Handling in PHP
+Aim: To Comprehend the concept of MySQL DB handling using PHP. 
+Objective: To implement the program to perform all DB operation using PHP
+Contents:
+MCQ and Technical Questions on cookies and session
+
+Program to implement in Lab:
+
+1.	Implement the PHP code to perform the following operation 
+-	Create Database
+-	Create Table
+-	Insert values into the table
+-	Select and select with where clause
+-	Update the values in DB
+-	Delete the particular record from DB
+-	Drop table
+-	Drop DB
+1_1.php
+<?php
+
+$con = mysqli_connect("localhost", "root", "0987", "myDatabasePHP_1");
+if (!$con)
+    echo "Connection is not established.<br>";
+else
+    echo "Connection is established<br>";
+
+// SQL to create table
+
+// $sql = "CREATE TABLE Students (
+//         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+//         name VARCHAR(30) NOT NULL,
+//         rollno int NOT NULL,
+//         marks int NOT NULL
+//     )";
+
+// if (mysqli_query($con, $sql)) {
+//     echo "Table Students created successfully<br>";
+// } else {
+//     echo "Error creating table: " . $conn->error;
+// }
+
+$sql = "INSERT INTO Students (name, rollno, marks)
+    VALUES ('DS', 22, 100) , ('ABC', 23, 50)";
+
+if (mysqli_query($con, $sql)) {
+    echo "New record created successfully<br>";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+echo "<br><br>";
+
+// Select all records
+$sql = "SELECT id, name, rollno, marks FROM Students";
+$result = mysqli_query($con, $sql);
+
+echo "Select all records";
+echo "<table border='1'>
+    <tr>
+    <th>Name</th>
+    <th>Roll_No</th>
+    <th>Marks</th>
+    </tr>";
+while ($row = mysqli_fetch_array($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['rollno'] . "</td>";
+    echo "<td>" . $row['marks'] . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// Select with WHERE clause
+$sql = "SELECT id, name, rollno, marks FROM Students WHERE rollno=22";
+$result = mysqli_query($con, $sql);
+
+echo "<br>Select with WHERE clause";
+
+echo "<table border='1'>
+    <tr>
+    <th>Name</th>
+    <th>Roll_No</th>
+    <th>Marks</th>
+    </tr>";
+while ($row = mysqli_fetch_array($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['rollno'] . "</td>";
+    echo "<td>" . $row['marks'] . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// Update data
+$sql = "UPDATE Students SET rollno = 24 WHERE id=2";
+
+if (mysqli_query($con, $sql)) {
+    echo "<br>Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "SELECT id, name, rollno, marks FROM Students";
+$result = mysqli_query($con, $sql);
+
+echo "<table border='1'>
+    <tr>
+    <th>Name</th>
+    <th>Roll_No</th>
+    <th>Marks</th>
+    </tr>";
+while ($row = mysqli_fetch_array($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['rollno'] . "</td>";
+    echo "<td>" . $row['marks'] . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// Delete the particular record from DB
+$sql = "DELETE FROM Students WHERE id = 2";
+if (mysqli_query($con, $sql)) {
+    echo "<br>Record deleted successfully";
+} else {
+    echo "Error deleting record: " . $conn->error;
+}
+
+$sql = "SELECT id, name, rollno, marks FROM Students";
+$result = mysqli_query($con, $sql);
+echo "<table border='1'>
+    <tr>
+    <th>Name</th>
+    <th>Roll_No</th>
+    <th>Marks</th>
+    </tr>";
+while ($row = mysqli_fetch_array($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['rollno'] . "</td>";
+    echo "<td>" . $row['marks'] . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// Drop table
+$sql = "DROP TABLE Students";
+
+if (mysqli_query($con, $sql)) {
+    echo "<br>Table dropped successfully";
+} else {
+    echo "Error dropping table: " . $conn->error;
+}
+// Drop database
+$sql = "DROP DATABASE myDatabasePHP_1";
+
+if (mysqli_query($con, $sql)) {
+    echo "<br>Database dropped successfully";
+} else {
+    echo "Error dropping database: " . $conn->error;
+}
+mysqli_close($con);
+?>
+1.php
+
+<?php
+    $con = mysqli_connect("localhost","root","0987");
+    if (!$con)
+    echo "Connection is not established.";
+    else
+    echo "Connection is established.";
+    
+   
+    // Create database
+    $sql = "CREATE DATABASE myDatabasePHP_1";
+    if (mysqli_query($con, $sql)) {
+        echo "<br>Database created successfully";
+    } else {
+        echo "Error creating database: " . $conn->error;
+    }
+    
+
+    $con = mysqli_connect("localhost", "root", "0987", "myDatabasePHP_1");
+    if (!$con)
+        echo "Connection is not established.<br>";
+    else
+        echo "<br>Connection is established to the myDatabasePHP_1 database<br>";
+
+    // SQL to create table
+    $sql = "CREATE TABLE Students (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(30) NOT NULL,
+            rollno int NOT NULL,
+            marks int NOT NULL
+        )";
+
+    if (mysqli_query($con, $sql)) {
+        echo "Table Students created successfully<br>";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+    mysqli_close($con);
+?>
+2.	Write Simple HTML and PHP code to handle the DB using GUI
+(a.	perform the insert operation: make GUI using HTML and insert values into DB after clicking on “INSERT” button) 
+(b.	perform the select operation: Show all the values from DB on HTML table tag after clicking on “SHOW” Button
+
+login.html
+
+<html>
+
+<body style="display: flex; justify-content: center; ">
+    <div class="container">
+        <h2>Insert Data into Database</h2>
+        <form action="index.php" method="POST">
+            Name:
+            <input type="text" name="name">
+            <br><br>
+            Roll No:
+            <input type="text" name="rollno">
+            <br><br>
+            Marks:
+            <input type="text" name="marks">
+            <br><br>
+            <input type="submit" name="submit" value="INSERT">
+            <input type="submit" name="show" value="SHOW">
+        </form>
+    </div>
+
+</body>
+
+</html>
+
+Index.php
+<?php
+
+    $con = mysqli_connect("localhost", "root", "0987", "myDatabasePHP_1");
+    if (!$con)
+        echo "Connection is not established.<br>";
+    else
+        echo "Connection is established<br>";
+
+    if (isset($_POST['submit'])) {
+
+        $name = $_POST['name'];
+        $rollno = $_POST['rollno'];
+        $marks = $_POST['marks'];
+        
+        $sql = "INSERT INTO Students (name, rollno, marks)  VALUES ('$name', '$rollno', '$marks')";
+
+        if (mysqli_query($con, $sql)) {
+            echo "New record created successfully<br>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+
+    if (isset($_POST['show'])) {
+
+    // Select all records
+    $sql = "SELECT id, name, rollno, marks FROM Students";
+    $result = mysqli_query($con, $sql);
+
+    echo "All records";
+    echo "<table border='1'>
+        <tr>
+        <th>Name</th>
+        <th>Roll_No</th>
+        <th>Marks</th>
+        </tr>";
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<tr>";
+        echo "<td>" . $row['name'] . "</td>";
+        echo "<td>" . $row['rollno'] . "</td>";
+        echo "<td>" . $row['marks'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+
+    }
+
+?>
+
