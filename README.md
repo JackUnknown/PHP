@@ -175,14 +175,18 @@ echo "Area of the rectangle: " . $rectangle->calculateArea();
 ////////////////////////////////////////////////////////////////////////////////
 
 
+EXPERIMENT NO. 05
+
+Title:	Handling Form in PHP
+
 Problem Statement:
 Create a registration form with all component (Textbox, radio button, checkbox, list..) . Perform the validation of all fields. After Submit Display information of registration in PHP on other page
 (Make use of POST method, Use Superglobal variable $_POST() 
 Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technology Known (Checkbox) etc…
 (Include all kind of components in form)
+ 
+1.html 
 
-
-1.html
 
 <!DOCTYPE html>
 <html lang="en">
@@ -222,9 +226,7 @@ Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technol
 
                 <br><br>
 
-
             <input type="submit" name="submit" value="Submit" >
-
 
         </form>
     </div>
@@ -232,10 +234,8 @@ Fields: Roll, Name, Class (List) Email ID, Phone Number, Gender (radio), Technol
 </html>
 
 
-///////////////////////
 
 action.php
-
 
 <!DOCTYPE html>
 <html>
@@ -256,14 +256,12 @@ action.php
             $roll = $_POST['roll'];
             $email = $_POST['email'];
 
-
             $password = $_POST['password'];
 
             $monumber = $_POST['monumber'];
             $class = $_POST['class'];
             $gender = $_POST['gender'];
             $technology = $_POST['technology'];
-
 
             if (!preg_match('/^[a-zA-Z]+$/', $fname)) {
                 echo "<p>First Name: Invalid First name</p>";
@@ -302,7 +300,6 @@ action.php
                 echo "<p>Email ID: $email</p>";
             }
 
-
             echo "<p>Class: $class</p>";
             echo "<p>Gender: $gender</p>";
             echo "<p>Technology Known: " . implode(", ", $technology) . "</p>";
@@ -312,6 +309,9 @@ action.php
 </body>
 
 </html>
+
+
+
 
 
 
