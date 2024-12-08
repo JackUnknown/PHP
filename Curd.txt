@@ -1,0 +1,341 @@
+EXPERIMENT NO. 09
+
+Title:	Laravel crud
+Aim: To Comprehend the concept of CURD Operation in laravel. 
+Objective: To implement the program to perform CURD operation in Laravel 
+Contents:
+MCQ and Technical Questions on cookies and session
+
+Problem Statement: 
+
+1)	Perform CURD Operation in laravel
+
+Step 1: Create the project:
+
+DELL@DESKTOP-6RMFKG0 MINGW64 /c/xampp/htdocs
+$ composer create-project laravel/laravel crud
+Step 2: Create the table in mysql DB
+Database name: my_db
+Table student: RollN0, FirstName and marks
+Step 3:
+Edit Edit the .env file.
+Edit DB_DATABASE to my_db
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=my_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+Step 4: Now, we create the migration to create a table in a my_db database shown in the below screenshot:
+DELL@DESKTOP-6RMFKG0 MINGW64 /c/xampp/htdocs/crud
+$ php artisan make:migration create_user_table --create="user"
+public function up(): void
+    {
+        Schema::create('user', function (Blueprint $table) {
+            $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('gender');
+            $table->string('qualifications'); 
+            $table->timestamps();
+        });
+
+////
+php artisan migrate
+
+///////
+Step 7:
+we need to create a model to perform a database operations.
+=== php artisan make:model Curd
+
+///
+class Curd extends Model
+{
+protected $table='user';  
+protected $fillable=['first_name','last_name','gender','qualifications'];  
+}
+
+////
+Step 8:
+Now to we create a controller with a resource that implements all the CRUD operations.
+
+DELL@DESKTOP-6RMFKG0 MINGW64 /c/xampp/htdocs/crud
+$ php artisan make:controller CurdController -r
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Curd;
+class CurdController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $cruds = Curd::all();  
+  
+        return view('index', compact('cruds'));  
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'gender'=>'required',
+            'qualifications'=>'required'
+        ]);
+        $crud=new Curd;
+        $crud->first_name =  $request->get('first_name');  
+        $crud->last_name = $request->get('last_name');  
+        $crud->qualifications = $request->get('qualifications');  
+        $crud->gender = $request->get('gender');  
+        $crud->save();  
+        echo "Record Inserted";
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $crud= Curd::find($id);  
+        return view('edit', compact('crud'));  
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'qualifications' => 'required',
+        ]);
+    
+        // Find the record by id
+        $crud = Curd::find($id);
+        
+        // Update the record with the new values
+        $crud->first_name = $request->get('first_name');
+        $crud->last_name = $request->get('last_name');
+        $crud->gender = $request->get('gender');
+        $crud->qualifications = $request->get('qualifications');
+        
+        // Save the updated record back to the database
+        $crud->save();
+        
+        // Optionally, redirect back to the index page with a success message
+        return redirect('/show')->with('success', 'Record updated successfully');
+    }
+    
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $crud=Curd::find($id);  
+        $crud->delete();  
+    }
+
+}
+
+
+
+////////////
+
+create.blade.php 
+<html>
+
+<body>
+    <h2>User Form</h2>
+    <form method="post" action="{{ route('users.store') }}">
+        @csrf
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" class="form-control" name="first_name" /><br /><br />
+        </div>
+        <div class="form-group">
+            <label for="first_name">Last Name:</label>
+            <input type="text" class="form-control" name="last_name" /><br /><br />
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <input type="text" class="form-control" name="gender" /><br /><br />
+        </div>
+        <div class="form-group">
+            <label for="qualifications">Qualifications:</label>
+            <input type="text" class="form-control" name="qualifications" /><br /><br />
+        </div>
+        <br />
+        <button type="submit" class="btn-btn">Insert</button>
+    </form>
+</body>
+
+</html>
+
+//////
+edit.blade.view
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Form</title>
+    
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Update User</h2>
+    <!-- @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif -->
+    <form action="{{route('users.update',$crud->id)}}" method="post">
+        @csrf
+        @method('PATCH')
+        
+        <div class="user-box">      
+        <label for="first_name">First Name:</label>  
+            <input type="text" class="form-control" name="first_name" value="{{$crud->first_name}}" required/>
+            
+        </div>  
+      
+        <div class="user-box">     
+        <label for="last_name">Last Name:</label>   
+            <input type="text" class="form-control" name="last_name" value="{{ $crud->last_name }}" required/>
+            
+        </div>  
+      
+        <div class="user-box">  
+        <label for="gender">Gender:</label>     
+            <input type="text" class="form-control" name="gender" value="{{ $crud->gender }}" required/>
+             
+        </div>  
+      
+        <div class="user-box">   
+        <label for="qualifications">Qualifications:</label>    
+            <input type="text" class="form-control" name="qualifications" value="{{ $crud->qualifications }}" required/>
+            
+        </div>
+
+        <button type="submit" class="btn-btn">Update</button>  
+    </form>
+</div>
+
+</body>
+</html>
+
+
+//////
+Index.blade.view
+<html>
+<h2>Details</h2>
+<table border='1'>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Qualifications</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($cruds as $crud)
+        <tr>
+            <td>{{$crud->id}}</td>
+            <td>{{$crud->first_name}}</td>
+            <td>{{$crud->last_name}}</td>
+            <td>{{$crud->gender}}</td>
+            <td>{{$crud->qualifications}}</td>
+            <td>
+                <form action="{{ route('users.destroy', $crud->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+
+            </td>
+            <td>
+                </form>
+                <a href="{{ route('users.edit', $crud->id) }}">
+                    <button type="button">Edit</button>
+                </a>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
+</html>
+
+///////
+Web.php
+
+<?php
+use App\Http\Controllers\CurdController;
+use Illuminate\Support\Facades\Route;
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/insert',function(){
+    return view('create');
+});
+Route::post('/users',[CurdController::class,'store'])->name('users.store');
+Route::get('/show', [CurdController::class,'index']);
+
+Route::delete('/users/{id}', [CurdController::class,'destroy'])->name('users.destroy');
+Route::get('/users/{id}/edit', [CurdController::class, 'edit'])->name('users.edit');
+
+Route::patch('/users/{id}', [CurdController::class, 'update'])->name('users.update');
